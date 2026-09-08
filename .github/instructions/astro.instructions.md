@@ -20,6 +20,7 @@ import { getDatabase } from '../lib/db';
 import { getAllGames } from '../lib/games';
 
 interface Props {
+  /** Heading displayed above the game list. */
   title: string;
 }
 
@@ -109,7 +110,9 @@ There is no Svelte/React layer. When a page genuinely needs client behaviour, ad
 ## TypeScript
 
 - Use TypeScript for type-safe props
-- Define `Props` interface in frontmatter
+- Define a `Props` interface in frontmatter
+- For every reusable component, add a TSDoc/JSDoc comment to each `Props` member describing the component contract, including defaults or constraints when relevant
+- If the purpose of the contract is not obvious from its members, add a short TSDoc/JSDoc summary above the `Props` interface
 - Type component imports and helper return values
 - Run `npx astro sync` to (re)generate route/content types before linting or type-checking
 - `.astro` files are type-checked by `npm run typecheck:astro` (which runs `astro sync` then `astro check`), on the classic `typescript` package. The pure TypeScript in `db/`, `src/lib/`, and `src/types/` is type-checked separately by `npm run typecheck` (the native TS 7 compiler, `tsgo`), which does **not** process `.astro` files.
@@ -120,3 +123,5 @@ There is no Svelte/React layer. When a page genuinely needs client behaviour, ad
 - Minimize client-side JavaScript — the default is zero JS shipped
 - Import and use global CSS styles from layouts
 - Always include a `data-testid` on interactive elements (see `ui.instructions.md`)
+- Use comments to explain intent or a non-obvious Astro/static-rendering constraint, not to narrate the markup or frontmatter
+- Update or remove comments whenever the component behavior they describe changes

@@ -55,6 +55,30 @@ export async function getAllGameIds(db: Database): Promise<number[]> {
 - Map raw rows to the app-facing `Game`/`Publisher`/`Category` types in one place; don't leak Drizzle row shapes into components.
 - Keep ordering/lookup logic in `games.ts`, not in pages.
 
+## Exported Function Documentation
+
+Every exported function in `db/` and `src/lib/` must have a TSDoc/JSDoc block that:
+
+- Summarizes the function's purpose and any non-obvious behavior or constraints.
+- Includes an `@param` tag for every parameter.
+- Includes an `@returns` tag describing the returned value, including important empty or not-found states.
+- Explains that an injectable `db` parameter accepts the production database or an in-memory test database.
+
+```ts
+/**
+ * Returns one game by its database identifier.
+ *
+ * @param db - Database client supplied by the page or an in-memory test.
+ * @param id - Identifier of the game to retrieve.
+ * @returns The mapped game, or `null` when the identifier does not exist.
+ */
+export async function getGameById(db: Database, id: number): Promise<Game | null> {
+    // ...
+}
+```
+
+Comments inside a function should explain why a query, transform, or workaround is necessary. Do not narrate SQL-builder calls or restate a type signature. Update or remove comments in the same change whenever the behavior they describe changes.
+
 ## Determinism
 
 Seed-derived values must be reproducible across builds. Derive star ratings from a stable hash of the title (`ratingFromTitle`) — **never** `Math.random()`.
@@ -70,3 +94,12 @@ Node.js 22.13 or later is required because the data layer uses the built-in `nod
 ## Type checking
 
 The data layer (`db/**/*.ts`, `src/lib/*.ts`) is type-checked by `npm run typecheck`, which runs the native **TypeScript 7** compiler (`tsgo`, from `@typescript/native-preview`) against `tsconfig.tsgo.json`. Keep helpers exported with explicit parameter and return types so `tsgo` can verify them. Linting is unaffected — ESLint + `typescript-eslint` still run on the classic `typescript` package.
+
+## TypeScript Formatting
+
+- Use 4 spaces for indentation.
+- Use single quotes for strings and terminate statements with semicolons.
+- Include trailing commas in multiline arrays, objects, imports, parameters, and calls.
+- Keep imports at the top of the module and use `import type` for type-only imports.
+- Follow the surrounding code's line-breaking style and keep nested query chains readable.
+- Run lint through the `quality-checks` skill. ESLint enforces the machine-checkable baseline; documentation meaning and the remaining formatting conventions require review.
