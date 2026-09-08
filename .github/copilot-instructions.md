@@ -35,12 +35,26 @@ This is a crowdfunding platform for games with a developer theme. The applicatio
 ### Code formatting requirements
 
 - Use TypeScript with explicit types for function parameters and return values, especially in the data layer (`db/`, `src/lib/`)
+- Use 4-space indentation, single quotes, semicolons, and trailing commas in multiline TypeScript structures
+- Keep imports grouped at the top of the module and prefer one declaration per statement
+- Preserve the surrounding file's established formatting when a file type has different conventions
 - Frontend code (TypeScript, Astro) must pass ESLint checks (`npm run lint`)
+- Treat ESLint as the automated baseline for machine-checkable rules; review formatting and documentation requirements that ESLint cannot express
+
+### Documentation and comments
+
+- Comments must explain intent, constraints, or a non-obvious decision — never restate the mechanics already clear from the code
+- Delete comments that only paraphrase the next statement
+- Treat stale comments as bugs: update or remove them whenever the related code changes
+- Every exported function in `db/` and `src/lib/` must have a TSDoc/JSDoc block that describes its purpose, every parameter, and its return value
+- Document injectable `db` parameters explicitly so the production and in-memory testing pattern remains clear
+- Every reusable `.astro` component must document its `Props` interface and the purpose of each prop
 
 ### Data Layer Patterns (Drizzle + Node SQLite)
 
 - Define tables in `db/schema.ts`; manage schema changes with drizzle-kit migrations - see `drizzle.instructions.md`
 - Keep data-access helpers in `src/lib/` with an **injectable `db`** argument so they're testable
+- Document every exported data-layer function with TSDoc/JSDoc, including `@param` and `@returns` tags
 - Keep CSV/seed logic as pure functions in `db/transforms.ts`
 - Seed-derived values must be deterministic (no `Math.random`) so static builds are reproducible
 
@@ -51,6 +65,7 @@ This is a crowdfunding platform for games with a developer theme. The applicatio
 - Dynamic routes use `getStaticPaths()` + `export const prerender = true`
 - Provide a branded `404.astro` (unknown routes are real 404s under static output)
 - Only add a scoped Astro `<script>` when genuine client interactivity is required
+- Document the `Props` interface for every reusable component
 
 ### Styling
 
