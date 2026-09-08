@@ -102,7 +102,7 @@ function renderPriorityCard(issue) {
         <article class="card priority-card">
             <div class="card-topline">
                 <span class="rank">Priority ${issue.priority}</span>
-                <a href="${issue.url}" target="_blank" rel="noreferrer">#${issue.number}</a>
+                <a href="${issue.url}" target="_blank" rel="noreferrer" data-testid="issue-link-${issue.number}">#${issue.number}</a>
             </div>
             <h3>${escapeHtml(issue.title)}</h3>
             <p>${escapeHtml(issue.summary)}</p>
@@ -110,7 +110,7 @@ function renderPriorityCard(issue) {
                 <strong>Why now</strong>
                 <span>${escapeHtml(issue.justification)}</span>
             </div>
-            <button type="button" data-issue="${issue.number}">Work on this issue</button>
+            <button type="button" data-issue="${issue.number}" data-testid="work-on-issue-${issue.number}">Work on this issue</button>
         </article>`;
 }
 
@@ -120,12 +120,12 @@ function renderBacklogCard(issue) {
             <div>
                 <div class="card-topline">
                     <span class="queue">Queued</span>
-                    <a href="${issue.url}" target="_blank" rel="noreferrer">#${issue.number}</a>
+                    <a href="${issue.url}" target="_blank" rel="noreferrer" data-testid="issue-link-${issue.number}">#${issue.number}</a>
                 </div>
                 <h3>${escapeHtml(issue.title)}</h3>
                 <p>${escapeHtml(issue.summary)}</p>
             </div>
-            <button type="button" data-issue="${issue.number}">Work on this issue</button>
+            <button type="button" data-issue="${issue.number}" data-testid="work-on-issue-${issue.number}">Work on this issue</button>
         </article>`;
 }
 
